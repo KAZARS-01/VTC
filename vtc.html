@@ -1,0 +1,660 @@
+<!-- Fichier: index.html -->
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMSTransport - Réservez Votre Course en France</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-ieF6fF9y46W4z3T9/3iI53+J3aE2x9Ie6nL4j4D6f6u4G3h9/8a2e7z0sT1y5Wz5D9y9U5b2D8qR8kX8I2jF6w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-white">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-indigo-600">
+                <i class="fas fa-car-side mr-2"></i>SMSTransport
+            </a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="#services" class="hover:text-indigo-600 transition duration-150">Services</a>
+                <a href="#reviews" class="hover:text-indigo-600 transition duration-150">Témoignages</a>
+                <a href="#categories" class="hover:text-indigo-600 transition duration-150">Catégories</a>
+                <a href="#booking" class="hover:text-indigo-600 transition duration-150">Réservation</a>
+                <a href="#contact" class="hover:text-indigo-600 transition duration-150">Contact</a>
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-150">
+                    <i class="fas fa-sun text-lg text-gray-700 dark:text-gray-300"></i>
+                </button>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-gray-700 dark:text-gray-300 text-2xl">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+            <a href="#services" class="block py-3 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-150">Services</a>
+            <a href="#reviews" class="block py-3 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-150">Témoignages</a>
+            <a href="#categories" class="block py-3 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-150">Catégories</a>
+            <a href="#booking" class="block py-3 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-150">Réservation</a>
+            <a href="#contact" class="block py-3 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-150">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="booking" class="relative bg-indigo-700 text-white py-20 lg:py-32 overflow-hidden">
+            <div class="absolute inset-0">
+                <img src="https://placehold.co/1920x1080/4F46E5/FFFFFF/png?text=Carte+de+France" alt="Carte de France en arrière-plan" class="object-cover w-full h-full opacity-30">
+            </div>
+            <div class="container mx-auto px-4 relative z-10 flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/2 text-center md:text-left">
+                    <h1 class="text-4xl lg:text-6xl font-extrabold leading-tight">
+                        Votre course privée en France, en toute simplicité
+                    </h1>
+                    <p class="mt-4 text-lg lg:text-xl text-indigo-100">
+                        Réservez votre véhicule avec chauffeur, de l'économique au van, pour tous vos trajets professionnels ou personnels.
+                    </p>
+                </div>
+                <div class="md:w-1/2 w-full p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+                        Réservez Votre Course
+                    </h2>
+                    <form id="booking-form" class="space-y-6">
+                        <div class="relative">
+                            <label for="pickup" class="sr-only">Lieu de prise en charge</label>
+                            <div class="relative">
+                                <i class="fas fa-map-marker-alt absolute left-4 top-1/2 transform -translate-y-1/2 text-indigo-500"></i>
+                                <input
+                                    type="text"
+                                    id="pickup"
+                                    name="pickup"
+                                    placeholder="Lieu de prise en charge"
+                                    class="w-full rounded-full border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 pl-12"
+                                    autocomplete="off"
+                                    required
+                                />
+                                <div id="pickup-suggestions" class="absolute z-20 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-48 overflow-y-auto hidden"></div>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <label for="dropoff" class="sr-only">Lieu de dépose</label>
+                            <div class="relative">
+                                <i class="fas fa-map-marker-alt absolute left-4 top-1/2 transform -translate-y-1/2 text-red-500"></i>
+                                <input
+                                    type="text"
+                                    id="dropoff"
+                                    name="dropoff"
+                                    placeholder="Lieu de dépose"
+                                    class="w-full rounded-full border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 pl-12"
+                                    autocomplete="off"
+                                    required
+                                />
+                                <div id="dropoff-suggestions" class="absolute z-20 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-48 overflow-y-auto hidden"></div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Catégorie de voiture
+                            </label>
+                            <div id="car-categories" class="grid grid-cols-3 gap-4 w-full">
+                                <!-- Car icons will be generated here by JS -->
+                                <div id="category-Eco" class="flex flex-col items-center p-4 cursor-pointer rounded-xl transition duration-200 ease-in-out border-2 border-indigo-500 bg-indigo-100 dark:bg-indigo-900" data-category="Eco">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-600 dark:text-indigo-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                                    <span class="mt-2 text-sm font-semibold text-indigo-700 dark:text-indigo-300">Économique</span>
+                                </div>
+                                <div id="category-Berline" class="flex flex-col items-center p-4 cursor-pointer rounded-xl transition duration-200 ease-in-out border-2 border-gray-200 dark:border-gray-700 hover:border-indigo-400" data-category="Berline">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-600 dark:text-gray-400" fill="currentColor" viewBox="0 0 24 24"><path d="M18.92 6.01C18.72 5.61 18.29 5.3 17.82 5.1L12 3L6.18 5.1C5.71 5.3 5.28 5.61 5.08 6.01L3 11v9h3v-2h12v2h3v-9L18.92 6.01zM12 7c2.21 0 4 1.79 4 4H8c0-2.21 1.79-4 4-4zm1.5 10h-3v-2h3v2zm-3-3h6v-2h-6v2z"/></svg>
+                                    <span class="mt-2 text-sm font-semibold text-gray-600 dark:text-gray-400">Berline</span>
+                                </div>
+                                <div id="category-Van" class="flex flex-col items-center p-4 cursor-pointer rounded-xl transition duration-200 ease-in-out border-2 border-gray-200 dark:border-gray-700 hover:border-indigo-400" data-category="Van">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-600 dark:text-gray-400" fill="currentColor" viewBox="0 0 24 24"><path d="M21 16H3c-1.1 0-2 .9-2 2v2h22v-2c0-1.1-.9-2-2-2zM12 11c-1.66 0-3 1.34-3 3h6c0-1.66-1.34-3-3-3zm8-5h-5.01L14 3h-4L9.01 6H4c-1.1 0-2 .9-2 2v4h20V8c0-1.1-.9-2-2-2z"/></svg>
+                                    <span class="mt-2 text-sm font-semibold text-gray-600 dark:text-gray-400">Van</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" id="calculate-btn" class="w-full py-4 rounded-full font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                            Calculer le tarif
+                        </button>
+                    </form>
+                    <div id="fare-info" class="mt-6 p-6 bg-indigo-50 dark:bg-indigo-900 rounded-xl text-center shadow-inner hidden">
+                        <h3 class="text-xl font-bold text-indigo-800 dark:text-indigo-200">
+                            Tarif estimé : <span id="fare-display" class="text-2xl font-extrabold"></span>
+                        </h3>
+                        <p class="text-sm text-indigo-600 dark:text-indigo-400 mt-2">
+                            Ceci est une estimation. Le prix final peut varier.
+                        </p>
+                        <button id="submit-btn" class="mt-4 w-full py-4 rounded-full font-bold bg-green-600 hover:bg-green-700 text-white shadow-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                            Soumettre la demande de course
+                        </button>
+                        <button id="generate-itinerary-btn" class="mt-4 w-full py-4 rounded-full font-bold bg-purple-600 hover:bg-purple-700 text-white shadow-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                            Générer un itinéraire ✨
+                        </button>
+                    </div>
+
+                    <!-- Client Details Form -->
+                    <div id="client-details-form" class="mt-6 p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-inner hidden">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 text-center">
+                            Vos informations
+                        </h3>
+                        <form id="contact-form" class="space-y-4">
+                            <div>
+                                <label for="client-name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom Complet</label>
+                                <input type="text" id="client-name" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3" required>
+                            </div>
+                            <div>
+                                <label for="client-phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Numéro de téléphone</label>
+                                <input type="tel" id="client-phone" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3" required>
+                            </div>
+                            <div>
+                                <label for="client-email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Adresse e-mail</label>
+                                <input type="email" id="client-email" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3" required>
+                            </div>
+                            <button type="submit" id="confirm-booking-btn" class="w-full py-4 rounded-full font-bold bg-green-600 hover:bg-green-700 text-white shadow-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                                Confirmer la réservation
+                            </button>
+                        </form>
+                    </div>
+
+                    <div id="message-box" class="mt-4 p-4 rounded-md text-sm hidden"></div>
+                    
+                    <!-- Gemini Itinerary Section -->
+                    <div id="itinerary-section" class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 hidden">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                            Itinéraire suggéré par l'IA
+                        </h3>
+                        <div id="itinerary-loading" class="text-center text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-spinner fa-spin text-2xl"></i>
+                            <p class="mt-2">Génération de votre itinéraire...</p>
+                        </div>
+                        <div id="itinerary-content" class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg text-gray-900 dark:text-white hidden">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section id="reviews" class="container mx-auto px-4 py-16 lg:py-24">
+            <h2 class="text-3xl lg:text-4xl font-extrabold text-center mb-12">
+                Ce que disent nos clients
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg transform hover:-translate-y-2 transition duration-300 text-center">
+                    <div class="flex justify-center text-yellow-400 text-xl mb-2">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">
+                        "Service impeccable, chauffeur professionnel et courtois. Le trajet s'est déroulé à merveille !"
+                    </p>
+                    <p class="font-bold text-indigo-600">- Jean-Luc D.</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg transform hover:-translate-y-2 transition duration-300 text-center">
+                    <div class="flex justify-center text-yellow-400 text-xl mb-2">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">
+                        "J'utilise SMSTransport pour mes déplacements professionnels. Fiable et ponctuel, je recommande vivement."
+                    </p>
+                    <p class="font-bold text-indigo-600">- Marie L.</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg transform hover:-translate-y-2 transition duration-300 text-center">
+                    <div class="flex justify-center text-yellow-400 text-xl mb-2">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">
+                        "Le van était très confortable pour notre groupe. Le tarif était raisonnable et la réservation simple."
+                    </p>
+                    <p class="font-bold text-indigo-600">- Julien B.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="container mx-auto px-4 py-16 lg:py-24">
+            <h2 class="text-3xl lg:text-4xl font-extrabold text-center mb-12">
+                Nos Services Clés
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg transform hover:-translate-y-2 transition duration-300">
+                    <i class="fas fa-user-shield text-5xl text-indigo-600 mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">Gestion par le Propriétaire</h3>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        Chaque course est gérée et dispatchée par le propriétaire pour un contrôle qualité optimal.
+                    </p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg transform hover:-translate-y-2 transition duration-300">
+                    <i class="fas fa-file-invoice-dollar text-5xl text-indigo-600 mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">Facturation et Comptabilité</h3>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        Génération automatique de factures et de reçus pour toutes les courses.
+                    </p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg transform hover:-translate-y-2 transition duration-300">
+                    <i class="fas fa-headset text-5xl text-indigo-600 mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">CRM Intégré</h3>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        Un programme CRM pour une gestion efficace des clients et des transporteurs.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Car Categories Section -->
+        <section id="categories" class="bg-gray-200 dark:bg-gray-800 px-4 py-16 lg:py-24">
+            <div class="container mx-auto">
+                <h2 class="text-3xl lg:text-4xl font-extrabold text-center mb-12">
+                    Nos Catégories de Véhicules
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white dark:bg-gray-700 p-6 rounded-2xl shadow-lg text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-24 w-24 text-indigo-600 mb-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                        <h3 class="text-2xl font-bold mb-2">Économique</h3>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            Parfait pour les petits trajets urbains. Confortable et abordable.
+                        </p>
+                    </div>
+                    <div class="bg-white dark:bg-gray-700 p-6 rounded-2xl shadow-lg text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-24 w-24 text-indigo-600 mb-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18.92 6.01C18.72 5.61 18.29 5.3 17.82 5.1L12 3L6.18 5.1C5.71 5.3 5.28 5.61 5.08 6.01L3 11v9h3v-2h12v2h3v-9L18.92 6.01zM12 7c2.21 0 4 1.79 4 4H8c0-2.21 1.79-4 4-4zm1.5 10h-3v-2h3v2zm-3-3h6v-2h-6v2z"/></svg>
+                        <h3 class="text-2xl font-bold mb-2">Berline</h3>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            Idéal pour les voyages d'affaires ou les courses longue distance.
+                        </p>
+                    </div>
+                    <div class="bg-white dark:bg-gray-700 p-6 rounded-2xl shadow-lg text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-24 w-24 text-indigo-600 mb-4" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16H3c-1.1 0-2 .9-2 2v2h22v-2c0-1.1-.9-2-2-2zM12 11c-1.66 0-3 1.34-3 3h6c0-1.66-1.34-3-3-3zm8-5h-5.01L14 3h-4L9.01 6H4c-1.1 0-2 .9-2 2v4h20V8c0-1.1-.9-2-2-2z"/></svg>
+                        <h3 class="text-2xl font-bold mb-2">Van</h3>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            La solution pour les groupes et les familles, offrant plus d'espace.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-gray-800 text-gray-300 py-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="#" class="hover:text-white transition duration-150"><i class="fab fa-twitter text-2xl"></i></a>
+                <a href="#" class="hover:text-white transition duration-150"><i class="fab fa-facebook-f text-2xl"></i></a>
+                <a href="#" class="hover:text-white transition duration-150"><i class="fab fa-instagram text-2xl"></i></a>
+                <a href="#" class="hover:text-white transition duration-150"><i class="fab fa-linkedin-in text-2xl"></i></a>
+            </div>
+            <div class="flex justify-center flex-wrap gap-4 mb-6">
+                <a href="tel:+33612345678" class="flex items-center hover:text-white transition duration-150">
+                    <i class="fas fa-phone mr-2"></i> +33 6 12 34 56 78
+                </a>
+                <a href="https://wa.me/33612345678" class="flex items-center hover:text-white transition duration-150" target="_blank">
+                    <i class="fab fa-whatsapp mr-2"></i> WhatsApp
+                </a>
+            </div>
+            <p class="text-sm">&copy; 2024 SMSTransport. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // IMPORTANT: These variables are provided by the canvas environment.
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : '';
+
+        // --- Firebase Setup ---
+        let db;
+        let auth;
+        let userId;
+
+        const setupFirebase = async () => {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                userId = auth.currentUser?.uid || crypto.randomUUID();
+            } catch (error) {
+                console.error("Firebase initialization or authentication failed:", error);
+            }
+        };
+
+        // --- Location Autocomplete (Simulated) ---
+        const frenchCities = [
+            "Paris, France", "Marseille, France", "Lyon, France", "Toulouse, France",
+            "Nice, France", "Nantes, France", "Strasbourg, France", "Montpellier, France",
+            "Bordeaux, France", "Lille, France", "Rennes, France", "Reims, France",
+            "Le Havre, France", "Saint-Étienne, France", "Toulon, France", "Grenoble, France"
+        ];
+        
+        const createSuggestionsList = (inputElement, suggestionsElement, setLocation) => {
+            inputElement.addEventListener('input', () => {
+                const query = inputElement.value;
+                if (query.length > 2) {
+                    const filtered = frenchCities.filter(city => city.toLowerCase().includes(query.toLowerCase()));
+                    displaySuggestions(filtered, suggestionsElement, setLocation);
+                } else {
+                    suggestionsElement.classList.add('hidden');
+                }
+            });
+        
+            inputElement.addEventListener('focus', () => {
+                const query = inputElement.value;
+                if (query.length > 2) {
+                    const filtered = frenchCities.filter(city => city.toLowerCase().includes(query.toLowerCase()));
+                    displaySuggestions(filtered, suggestionsElement, setLocation);
+                }
+            });
+        
+            document.addEventListener('click', (e) => {
+                if (!inputElement.contains(e.target) && !suggestionsElement.contains(e.target)) {
+                    suggestionsElement.classList.add('hidden');
+                }
+            });
+        };
+        
+        const displaySuggestions = (suggestions, suggestionsElement, setLocation) => {
+            if (suggestions.length === 0) {
+                suggestionsElement.classList.add('hidden');
+                return;
+            }
+            suggestionsElement.innerHTML = '';
+            suggestions.forEach(suggestion => {
+                const li = document.createElement('li');
+                li.className = 'p-3 cursor-pointer hover:bg-indigo-100 dark:hover:bg-indigo-600 text-gray-900 dark:text-white';
+                li.textContent = suggestion;
+                li.addEventListener('click', () => {
+                    setLocation(suggestion);
+                    suggestionsElement.classList.add('hidden');
+                });
+                suggestionsElement.appendChild(li);
+            });
+            suggestionsElement.classList.remove('hidden');
+        };
+        
+        // --- Fare Calculation and Booking Logic ---
+        const calculateFare = (distanceInKm, category) => {
+            const baseFare = 30;
+            const baseDistance = 10;
+            const ratePer500m = 1;
+        
+            let calculatedFare = 0;
+            if (distanceInKm <= baseDistance) {
+                calculatedFare = baseFare;
+            } else {
+                const extraDistance = distanceInKm - baseDistance;
+                const extraCharge = Math.ceil(extraDistance / 0.5) * ratePer500m;
+                calculatedFare = baseFare + extraCharge;
+            }
+        
+            let finalFare = calculatedFare;
+            if (category === 'Berline') {
+                finalFare = calculatedFare * 1.2;
+            } else if (category === 'Van') {
+                finalFare = calculatedFare * 1.5;
+            }
+        
+            return finalFare;
+        };
+        
+        const showMessage = (message, isSuccess = false) => {
+            const msgBox = document.getElementById('message-box');
+            msgBox.textContent = message;
+            msgBox.classList.remove('hidden', 'bg-green-100', 'bg-red-100', 'bg-blue-100', 'dark:bg-green-800', 'dark:bg-red-800', 'dark:bg-blue-800', 'text-green-800', 'text-red-800', 'text-blue-800', 'dark:text-green-200', 'dark:text-red-200', 'dark:text-blue-200');
+            if (isSuccess) {
+                msgBox.classList.add('bg-green-100', 'dark:bg-green-800', 'text-green-800', 'dark:text-green-200');
+            } else {
+                msgBox.classList.add('bg-red-100', 'dark:bg-red-800', 'text-red-800', 'dark:text-red-200');
+            }
+        };
+
+        const generateItinerary = async (pickup, dropoff) => {
+            const itinerarySection = document.getElementById('itinerary-section');
+            const itineraryLoading = document.getElementById('itinerary-loading');
+            const itineraryContent = document.getElementById('itinerary-content');
+            itinerarySection.classList.remove('hidden');
+            itineraryLoading.classList.remove('hidden');
+            itineraryContent.classList.add('hidden');
+
+            const prompt = `En tant qu'assistant de voyage spécialisé en France, proposez un bref itinéraire de voyage et des points d'intérêt entre le lieu de départ "${pickup}" et le lieu d'arrivée "${dropoff}". Ne mentionnez pas de tarifs ni de durée de trajet. Répondez en français.`;
+
+            let chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+            const payload = { contents: chatHistory };
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+            try {
+                let response;
+                let retries = 3;
+                const baseDelay = 1000;
+                while (retries > 0) {
+                    try {
+                        response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        if (response.status !== 429) {
+                            break;
+                        }
+                        const delay = baseDelay * Math.pow(2, 3 - retries);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        retries--;
+                    } catch (e) {
+                        retries = 0;
+                        throw e;
+                    }
+                }
+
+                if (!response || !response.ok) {
+                    throw new Error(`API call failed with status: ${response ? response.status : 'No response'}`);
+                }
+
+                const result = await response.json();
+                const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (text) {
+                    itineraryContent.innerHTML = text.replace(/\n/g, '<br/>');
+                    itineraryContent.classList.remove('hidden');
+                } else {
+                    itineraryContent.textContent = "Désolé, je n'ai pas pu générer d'itinéraire pour le moment.";
+                    itineraryContent.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error("Error generating itinerary:", error);
+                itineraryContent.textContent = "Une erreur est survenue lors de la génération de l'itinéraire.";
+                itineraryContent.classList.remove('hidden');
+            } finally {
+                itineraryLoading.classList.add('hidden');
+            }
+        };
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            await setupFirebase();
+
+            const pickupInput = document.getElementById('pickup');
+            const dropoffInput = document.getElementById('dropoff');
+            const pickupSuggestions = document.getElementById('pickup-suggestions');
+            const dropoffSuggestions = document.getElementById('dropoff-suggestions');
+            const bookingForm = document.getElementById('booking-form');
+            const fareInfo = document.getElementById('fare-info');
+            const fareDisplay = document.getElementById('fare-display');
+            const submitBtn = document.getElementById('submit-btn');
+            const calculateBtn = document.getElementById('calculate-btn');
+            const carCategories = document.getElementById('car-categories');
+            const generateItineraryBtn = document.getElementById('generate-itinerary-btn');
+            const clientDetailsFormSection = document.getElementById('client-details-form');
+            const contactForm = document.getElementById('contact-form');
+            let selectedCategory = 'Eco';
+            let calculatedDistance = null;
+            let calculatedFare = null;
+
+            createSuggestionsList(pickupInput, pickupSuggestions, (value) => { pickupInput.value = value; });
+            createSuggestionsList(dropoffInput, dropoffSuggestions, (value) => { dropoffInput.value = value; });
+
+            carCategories.addEventListener('click', (e) => {
+                const target = e.target.closest('div[data-category]');
+                if (target) {
+                    document.querySelectorAll('div[data-category]').forEach(div => {
+                        div.classList.remove('border-indigo-500', 'bg-indigo-100', 'dark:bg-indigo-900');
+                        div.classList.add('border-gray-200', 'dark:border-gray-700', 'hover:border-indigo-400');
+                        div.querySelector('svg').classList.remove('text-indigo-600', 'dark:text-indigo-400');
+                        div.querySelector('svg').classList.add('text-gray-600', 'dark:text-gray-400');
+                        div.querySelector('span').classList.remove('text-indigo-700', 'dark:text-indigo-300');
+                        div.querySelector('span').classList.add('text-gray-600', 'dark:text-gray-400');
+                    });
+                    selectedCategory = target.dataset.category;
+                    target.classList.remove('border-gray-200', 'dark:border-gray-700', 'hover:border-indigo-400');
+                    target.classList.add('border-indigo-500', 'bg-indigo-100', 'dark:bg-indigo-900');
+                    target.querySelector('svg').classList.remove('text-gray-600', 'dark:text-gray-400');
+                    target.querySelector('svg').classList.add('text-indigo-600', 'dark:text-indigo-400');
+                    target.querySelector('span').classList.remove('text-gray-600', 'dark:text-gray-400');
+                    target.querySelector('span').classList.add('text-indigo-700', 'dark:text-indigo-300');
+                }
+            });
+
+            bookingForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const pickup = pickupInput.value;
+                const dropoff = dropoffInput.value;
+                
+                if (!pickup || !dropoff) {
+                    showMessage('Veuillez entrer le lieu de prise en charge et de dépose.', false);
+                    return;
+                }
+
+                calculateBtn.textContent = 'Calcul...';
+                calculateBtn.disabled = true;
+                fareInfo.classList.add('hidden');
+                clientDetailsFormSection.classList.add('hidden');
+                document.getElementById('message-box').classList.add('hidden');
+
+                // Simulate API call for distance
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // Simulate a random distance
+                calculatedDistance = (Math.random() * 95 + 5).toFixed(2);
+                calculatedFare = calculateFare(calculatedDistance, selectedCategory);
+
+                fareDisplay.textContent = `${calculatedFare.toFixed(2)} €`;
+                fareInfo.classList.remove('hidden');
+                calculateBtn.textContent = 'Calculer le tarif';
+                calculateBtn.disabled = false;
+            });
+
+            submitBtn.addEventListener('click', () => {
+                if (calculatedFare !== null) {
+                    fareInfo.classList.add('hidden');
+                    clientDetailsFormSection.classList.remove('hidden');
+                } else {
+                    showMessage('Veuillez d\'abord calculer le tarif.', false);
+                }
+            });
+
+            contactForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const clientName = document.getElementById('client-name').value;
+                const clientPhone = document.getElementById('client-phone').value;
+                const clientEmail = document.getElementById('client-email').value;
+
+                if (!db || !userId) {
+                    showMessage("Utilisateur non authentifié ou base de données non prête.", false);
+                    return;
+                }
+
+                const confirmBtn = document.getElementById('confirm-booking-btn');
+                confirmBtn.textContent = 'Soumission...';
+                confirmBtn.disabled = true;
+                
+                try {
+                    const rideRequest = {
+                        pickup: pickupInput.value,
+                        dropoff: dropoffInput.value,
+                        distance: parseFloat(calculatedDistance),
+                        carCategory: selectedCategory,
+                        fare: calculatedFare,
+                        clientName: clientName,
+                        clientPhone: clientPhone,
+                        clientEmail: clientEmail,
+                        userId: userId,
+                        status: 'En attente',
+                        timestamp: new Date().toISOString(),
+                    };
+                    await addDoc(collection(db, `/artifacts/${appId}/public/data/requests`), rideRequest);
+                    showMessage('Votre demande de course a été soumise avec succès!', true);
+                    
+                    pickupInput.value = '';
+                    dropoffInput.value = '';
+                    fareInfo.classList.add('hidden');
+                    clientDetailsFormSection.classList.add('hidden');
+                    
+                } catch (error) {
+                    console.error("Error submitting ride request: ", error);
+                    showMessage('Échec de la soumission de la demande de course. Veuillez réessayer.', false);
+                } finally {
+                    confirmBtn.textContent = 'Confirmer la réservation';
+                    confirmBtn.disabled = false;
+                }
+            });
+
+            generateItineraryBtn.addEventListener('click', () => {
+                const pickup = pickupInput.value;
+                const dropoff = dropoffInput.value;
+                if (pickup && dropoff) {
+                    generateItinerary(pickup, dropoff);
+                } else {
+                    showMessage('Veuillez d\'abord entrer le lieu de prise en charge et de dépose.', false);
+                }
+            });
+
+            // Theme toggle
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            themeToggleBtn.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                const isDark = document.documentElement.classList.contains('dark');
+                if (isDark) {
+                    themeToggleBtn.innerHTML = '<i class="fas fa-moon text-lg text-gray-300"></i>';
+                } else {
+                    themeToggleBtn.innerHTML = '<i class="fas fa-sun text-lg text-gray-700"></i>';
+                }
+            });
+            const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (isSystemDark && !localStorage.getItem('theme')) {
+                document.documentElement.classList.add('dark');
+                themeToggleBtn.innerHTML = '<i class="fas fa-moon text-lg text-gray-300"></i>';
+            } else if (localStorage.getItem('theme') === 'dark') {
+                document.documentElement.classList.add('dark');
+                themeToggleBtn.innerHTML = '<i class="fas fa-moon text-lg text-gray-300"></i>';
+            }
+
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+        });
+    </script>
+</body>
+</html>
